@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="col-12">
+    <div class="pb-2 mt-4 mb-2 border-bottom">
+      <h1>
+        {{ pagetitle }}
+      </h1>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-12">
+    <form [formGroup]="angForm" (submit)="onSubmit()"  novalidate >
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input formControlName="title" type="text" class="form-control"
+               id="title" placeholder="Enter title" required>
+        <div *ngIf="angForm.controls['title'].invalid &&
+           (angForm.controls['title'].dirty ||
+           angForm.controls['title'].touched)"
+             class="alert alert-danger">
+          <div *ngIf="angForm.controls['title'].errors.required">
+            title is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="author">Author</label>
+        <input formControlName="author" type="text" class="form-control"
+               id="author" placeholder="Enter author" required >
+        <div *ngIf="angForm.controls['author'].invalid &&
+           (angForm.controls['author'].dirty ||
+           angForm.controls['author'].touched)"
+             class="alert alert-danger">
+          <div *ngIf="angForm.controls['author'].errors.required">
+            author is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="published_at">Published at </label>
+        <input formControlName="published_at" type="text" required class="form-control"
+               id="published_at" placeholder="Enter date published"
+               ngbDatepicker #d="ngbDatepicker" (focus)="d.toggle()"
+        >
+        <div *ngIf="angForm.controls['published_at'].invalid &&
+           (angForm.controls['published_at'].dirty &&
+           angForm.controls['published_at'].touched)"
+             class="alert alert-danger">
+          <div *ngIf="angForm.controls['published_at'].errors.required">
+            published at is required.
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="body">Description</label>
+        <textarea formControlName="body" class="form-control"
+                  id="body" rows="5" placeholder="Enter description" required></textarea>
+        <div *ngIf="angForm.controls['body'].invalid &&
+         (angForm.controls['body'].dirty ||
+          angForm.controls['body'].touched)"
+             class="alert alert-danger">
+          <div *ngIf="angForm.controls['body'].errors.required">
+            description is required.
+          </div>
+        </div>
+      </div>
+
+
+      <button type="submit"  [disabled]="angForm.pristine || angForm.invalid"
+              class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>

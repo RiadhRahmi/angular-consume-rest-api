@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-12">
+    <div class="pb-2 mt-4 mb-2 border-bottom">
+      <h1>
+        {{ pagetitle }}
+      </h1>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="showAlert">
+  <div class="col-12">
+    <ngb-alert [type]="alert.type" [dismissible]="true" (close)="showAlert = false">
+      {{ alert.message }}
+    </ngb-alert>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <form [formGroup]="angForm" (ngSubmit)="createUser()" novalidate>
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input formControlName="name" type="text" class="form-control
+        {{ name.dirty || name.touched ? (name.invalid ? 'is-invalid' : 'is-valid') : '' }} "
+               id="name" placeholder="Enter name">
+        <div *ngIf="name.invalid"
+             [class]="name.invalid ? 'invalid-feedback' : ''">
+          <span *ngIf="name.hasError('required')"> name is required </span>
+          <span *ngIf="name.hasError('minlength')"> min Length of name is 10 </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">email</label>
+        <input formControlName="email" type="email" class="form-control
+        {{ email.dirty || email.touched ? (email.invalid ? 'is-invalid' : 'is-valid') : '' }} "
+               id="email" placeholder="Enter email" name="email">
+        <div *ngIf="email.pending">Validating...</div>
+        <div *ngIf="email.invalid"
+             [class]="email.invalid ? 'invalid-feedback' : ''">
+          <span *ngIf="email.hasError('required')"> email is required </span>
+          <span *ngIf="email.hasError('email')"> Email must be a valid email address  </span>
+          <span *ngIf="email.hasError('uniqueEmail')"> Email must be a unique email address  </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password </label>
+        <input formControlName="password" type="password" class="form-control
+        {{ password.dirty || password.touched ? (password.invalid ? 'is-invalid' : 'is-valid') : '' }} "
+               id="password" placeholder="password"
+        >
+        <div *ngIf="password.invalid"
+             [class]="password.invalid ? 'invalid-feedback' : ''">
+          <span *ngIf="password.hasError('required')"> password is required </span>
+          <span *ngIf="password.hasError('min')"> min Length of password is 10  </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="pr-3"> Role </label>
+        <div class="custom-control custom-radio custom-control-inline" *ngFor="let roleID of person.rolesID">
+          <input class="custom-control-input" id="role{{roleID}}" formControlName="role" type="radio"
+                 [checked]="roleID===1" [value]="roleID">
+          <label class="custom-control-label" for="role{{roleID}}">
+            {{person.getRoles[roleID]|capitalize}}
+          </label>
+        </div>
+      </div>
+
+
+      <button type="submit" [disabled]="angForm.pristine || angForm.invalid"
+              class="btn btn-primary">Submit
+      </button>
+    </form>
+  </div>
+</div>

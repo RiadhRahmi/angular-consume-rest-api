@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-12">
+    <div class="pb-2 mt-4 mb-2 border-bottom">
+      <h1>
+        {{ pagetitle }}
+        <button routerLink="/users/add" class="btn btn-primary float-right">
+          <i class="fas fa-plus"></i> Add User
+        </button>
+      </h1>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="showAlert">
+  <div class="col-12">
+    <ngb-alert [type]="alert.type" [dismissible]="true" (close)="showAlert = false">
+      {{ alert.message }}
+    </ngb-alert>
+  </div>
+</div>
+
+<div class="row" *ngIf="users">
+  <div class="col-12 mt-3 mb-3">
+    <b>Total : {{users.length}} users </b>
+  </div>
+</div>
+
+<div class="row" *ngIf="users">
+  <div [class]="selectedUser? 'col-7 animated fadeIndown delay-3s' : 'col-12 animated fadeIndown delay-3s'">
+
+    <form [formGroup]="form">
+      <button type="button" class="btn btn-link" (click)="selectAll()">Select All</button>
+      /
+      <button type="button" class="btn btn-link" (click)="unSelectAll()">Unselect ALL</button>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-light" id="dropdownBasic1" ngbDropdownToggle>Actions</button>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button class="dropdown-item" (click)="deleteAll()">Delete</button>
+          <button class="dropdown-item">Export</button>
+        </div>
+      </div>
+      <br><br>
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Role</th>
+          <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr formArrayName="roles"
+            *ngFor="let role of form.controls.roles.controls; let i = index"
+            [class]="users[i] == selectedUser ?'active':'' ">
+          <th>
+            <input type="checkbox" value="{{users[i].id}}" [formControlName]="i">
+          </th>
+          <th scope="row">{{users[i].id }}</th>
+          <td>{{ users[i].name }}</td>
+          <td>{{ users[i].email }}</td>
+          <td>{{person.getRoles[users[i].role]|capitalize}}</td>
+          <td>
+            <div ngbDropdown class="d-inline-block">
+              <button class="btn btn-outline-primary"
+                      ngbDropdownToggle>actions
+              </button>
+              <div ngbDropdownMenu>
+                <button class="dropdown-item" (click)="delete(users[i].id )">Delete</button>
+                <button class="dropdown-item" (click)="selectedUser = users[i]">Edit</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        </tbody>
+      </table>
+    </form>
+  </div>
+  <div class="col-4 offset-1 mt-5 animated fadeInRight delay-3s">
+    <app-edit-user [user]="selectedUser" *ngIf="selectedUser"></app-edit-user>
+  </div>
+</div>

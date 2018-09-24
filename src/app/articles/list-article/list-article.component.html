@@ -1,0 +1,154 @@
+<div class="row">
+  <div class="col-12">
+    <div class="pb-2 mt-4 mb-2 border-bottom">
+      <h1>
+        {{ pagetitle }}
+        <button (click)="addArticle()" class="btn btn-primary float-right">
+          <i class="fas fa-plus"></i> Nouveau Article
+        </button>
+      </h1>
+    </div>
+  </div>
+</div>
+
+
+<div class="row" *ngIf="showAlert">
+  <div class="col-12">
+    <ngb-alert [type]="alert.type" [dismissible]="true" (close)="showAlert = false">
+      {{ alert.message }}
+    </ngb-alert>
+  </div>
+</div>
+
+
+<div class="row filter-search">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        Recherche
+        <i class="fas search-icon fa-angle-down float-right"
+           (click)="isCollapsed = !isCollapsed"
+           [attr.aria-expanded]="!isCollapsed"
+           aria-controls="collapseExample">
+        </i>
+      </div>
+      <div class="card-body" id="collapseExample" [ngbCollapse]="isCollapsed">
+        <form #searchForm="ngForm">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <input type="text" autocomplete="off" name="published_at"
+                     class="form-control" placeholder="Published at"
+                     [(ngModel)]="searchArticle.published_at" appDaterangepicker #published_at>
+            </div>
+            <div class="form-group col-md-4">
+              <input type="text" name="title" autocomplete="off" [(ngModel)]="searchArticle.title"
+                     class="form-control" placeholder="Title">
+            </div>
+            <div class="form-group col-md-4">
+              <input type="text" name="author" autocomplete="off" [(ngModel)]="searchArticle.author"
+                     class="form-control" placeholder="Author">
+            </div>
+          </div>
+          <div class="row d-flex justify-content-end">
+            <div class="form-group  col-sm-12 col-md-2">
+              <button class="btn btn-secondary btn-block" (click)="recherche(searchForm.value,published_at.value)">
+                <i class="fas fa-search"></i>&nbsp;&nbsp;Recherche
+              </button>
+            </div>
+            <div class="form-group   col-sm-12 col-md-2">
+              <button class="btn btn-secondary btn-block"
+                      (click)="searchForm.reset();recherche(searchForm.value,published_at.value)">
+                <i class="fas fa-redo-alt"></i>&nbsp;&nbsp;Reset
+              </button>
+            </div>
+            <div class="form-group col-sm-12 col-md-2">
+              <button class="btn btn-secondary btn-block" (click)="export()">
+                <i class="fas fa-file-excel"></i>&nbsp;&nbsp;Export
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="articles">
+
+  <div class="row">
+    <div class="col-12 mt-3 mb-3">
+      <b>Total : {{articles['total']}} articles </b>
+    </div>
+  </div>
+  <div class="row" *ngIf="!articles['total']">
+    <div class="col-12 text-center">
+      <b> Empty Page </b>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-4" *ngFor="let article of articles['data'] ">
+      <div class="card">
+        <img class="card-img-top" src="{{ article.image}}" alt="{{ article.title}}">
+        <div class="card-body">
+          <h5 class="card-title">{{ article.title}}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Author: {{ article.author}}</h6>
+          <p class="card-text">
+            <small class="text-muted">
+              Published at: {{ article.published_at}}
+            </small>
+          </p>
+          <button type="button" class="btn btn-primary btn-sm mr-1" (click)="showArticle(article.id)">
+            <i class="fas fa-search"></i>
+          </button>
+          <button *ngIf="!authService.isEditor" type="button" class="btn btn-success btn-sm mr-1"
+                  [routerLink]="['/articles', article.id, 'edit']">
+            <i class="far fa-edit"></i>
+          </button>
+          <button *ngIf="!authService.isEditor" type="button"
+                  class="btn btn-danger btn-sm mr-1" (click)="open(content,article)">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5" *ngIf="articles['total'] > articles['per_page']">
+    <div class="col-12">
+      <ngb-pagination
+        class="d-flex justify-content-center"
+        [collectionSize]="articles['total']"
+        [pageSize]="articles['per_page']"
+        [(page)]="articles['current_page']"
+        aria-label="Default pagination"
+        (pageChange)="getArticles($event)"
+      >
+
+      </ngb-pagination>
+    </div>
+  </div>
+
+</div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Confirmation Delete Article</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete article N° {{ selectedArticle.id }}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger"
+            (click)="delete(selectedArticle.id)">OK
+    </button>
+    <button type="button" class="btn btn-primary"
+            (click)="activeModal.close('Close click')">Close
+    </button>
+  </div>
+</ng-template>
+

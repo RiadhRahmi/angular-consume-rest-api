@@ -1,0 +1,91 @@
+<div class="row">
+  <div class="col-12">
+    <div class="pb-2 mt-4 mb-2 border-bottom">
+      <h1>
+        {{ pagetitle }}
+      </h1>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="showAlert">
+  <div class="col-12">
+    <ngb-alert [type]="alert.type" [dismissible]="true" (close)="showAlert = false">
+      {{ alert.message }}
+    </ngb-alert>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <form [formGroup]="angForm" (ngSubmit)="createArticle()" novalidate>
+      <div class="form-group">
+        <label for="title" i18n>Title</label>
+        <input formControlName="title" type="text"
+               class="form-control
+               {{ title.dirty || title.touched ? (title.invalid ? 'is-invalid' : 'is-valid') : '' }} "
+               id="title" placeholder="Enter title">
+        <div *ngIf="title.invalid"
+             [class]="title.invalid ? 'invalid-feedback' : ''">
+             <span *ngIf="title.hasError('required')"> title is required </span>
+             <span *ngIf="title.hasError('minlength')"> min Length of title is 3 </span>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label for="author" i18n>Author</label>
+        <input formControlName="author" type="text" class="form-control
+ {{ author.dirty || author.touched ? (author.invalid ? 'is-invalid' : 'is-valid') : '' }} "
+               id="author" placeholder="Enter author">
+
+        <div *ngIf="author.invalid"
+             [class]="author.invalid ? 'invalid-feedback' : ''">
+          <span *ngIf="author.hasError('required')"> title is required </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="published_at" i18n>Published at </label>
+        <input formControlName="published_at" type="text" class="form-control
+        {{ published_at.dirty || published_at.touched ? (published_at.invalid ? 'is-invalid' : 'is-valid') : '' }} "
+               id="published_at" placeholder="Enter date published"
+               ngbDatepicker #d="ngbDatepicker" (focus)="d.toggle()"
+        >
+        <div *ngIf="published_at.invalid"
+             [class]="published_at.invalid ? 'invalid-feedback' : ''">
+          <span *ngIf="published_at.hasError('required')"> published at is required </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="image" i18n>Image</label>
+        <input formControlName="image" type="file" class="form-control-file
+        {{ image.dirty || image.touched ? (image.invalid ? 'is-invalid' : 'is-valid') : '' }} "
+               id="image"
+               (change)="onFileChanged($event)" #fileInput>
+
+        <div *ngIf="image.invalid"
+             [class]="image.invalid ? 'invalid-feedback' : ''">
+          <span *ngIf="image.hasError('required')"> image is required </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="body" i18n>Description</label>
+        <textarea formControlName="body" class="form-control
+        {{ body.dirty || body.touched ? (body.invalid ? 'is-invalid' : 'is-valid') : '' }} "
+                  id="body" rows="5" placeholder="Enter description"></textarea>
+        <div *ngIf="body.invalid"
+             [class]="body.invalid ? 'invalid-feedback' : ''">
+          <span *ngIf="body.hasError('required')"> body is required </span>
+          <span *ngIf="body.hasError('minlength')"> min Length of body is 10 </span>
+
+        </div>
+      </div>
+      <button type="submit" [disabled]="angForm.pristine || angForm.invalid"
+              class="btn btn-primary" i18n>Submit
+      </button>
+    </form>
+  </div>
+</div>

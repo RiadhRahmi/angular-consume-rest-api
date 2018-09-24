@@ -1,0 +1,53 @@
+<div class="row" *ngIf="showAlert">
+  <div class="col-12">
+    <ngb-alert [type]="alert.type" [dismissible]="true" (close)="showAlert = false">
+      {{ alert.message }}
+    </ngb-alert>
+  </div>
+</div>
+
+<div class="container mt-5 pt-5">
+  <div class="row">
+    <div class="col-8 mx-auto">
+      <div class="card">
+        <div class="card-header">
+          Please sign in
+        </div>
+        <div class="card-body col-8 mx-auto">
+          <form [formGroup]="angForm" (ngSubmit)="login()" novalidate>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input formControlName="email" type="email" class="form-control" id="exampleInputEmail1"
+                     aria-describedby="emailHelp" placeholder="Enter email">
+              <div *ngIf="angForm.controls['email'].invalid &&
+           (angForm.controls['email'].dirty ||
+           angForm.controls['email'].touched)"
+                   class="alert alert-danger">
+                <div *ngIf="angForm.controls['email'].errors.required">
+                  email is required.
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input formControlName="password" type="password" class="form-control"
+                     id="exampleInputPassword1" placeholder="Password">
+              <div *ngIf="angForm.controls['password'].invalid &&
+           (angForm.controls['password'].dirty ||
+           angForm.controls['password'].touched)"
+                   class="alert alert-danger">
+                <div *ngIf="angForm.controls['password'].errors.required">
+                  password is required.
+                </div>
+              </div>
+            </div>
+            <button type="submit" [disabled]="angForm.pristine || angForm.invalid" class="btn btn-primary">
+              Submit
+            </button>
+            <button type="button" class="btn btn-success ml-1" routerLink="/register">Register</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
