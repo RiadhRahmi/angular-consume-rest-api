@@ -1,6 +1,4 @@
-# <a href="https://github.com/RiadhRahmi/example-api-laravel" target="_blank">AngularConsumeRestApi</a>
- 
- Example how to Consume <a href="https://github.com/RiadhRahmi/example-api-laravel" target="_blank"> REST API </a>  with Angular 
+# Example how to Consume <a href="https://github.com/RiadhRahmi/example-api-laravel" target="_blank"> REST API </a>  with Angular 
  
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.3.
 
