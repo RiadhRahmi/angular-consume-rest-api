@@ -1,7 +1,6 @@
 # Example how to Consume <a href="https://github.com/RiadhRahmi/example-api-laravel" target="_blank"> REST API </a>  with Angular 
 
-
-<img src="https://github.com/RiadhRahmi/reactjs-consume-rest-api/blob/master/public/app.gif" width="100%"/>
+Demo https://www.youtube.com/watch?v=RRtt-mBkLfc
  
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.3.
 
